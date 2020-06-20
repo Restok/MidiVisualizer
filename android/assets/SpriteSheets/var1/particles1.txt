@@ -1,0 +1,767 @@
+particles1-0.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 0
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 1
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 2
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 3
+
+particles1-1.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 4
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 5
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 6
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 7
+
+particles1-2.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 8
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 9
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 10
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 11
+
+particles1-3.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 12
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 13
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 14
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 15
+
+particles1-4.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 16
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 17
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 18
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 19
+
+particles1-5.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 20
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 21
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 22
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 23
+
+particles1-6.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 24
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 25
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 26
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 27
+
+particles1-7.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 28
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 29
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 30
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 31
+
+particles1-8.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 32
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 33
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 34
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 35
+
+particles1-9.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 36
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 37
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 38
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 39
+
+particles1-10.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 40
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 41
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 42
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 43
+
+particles1-11.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 44
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 45
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 46
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 47
+
+particles1-12.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 48
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 49
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 50
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 51
+
+particles1-13.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 52
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 53
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 54
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 55
+
+particles1-14.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 56
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 57
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 58
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 59
+
+particles1-15.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 60
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 61
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 62
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 63
+
+particles1-16.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 64
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 65
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 66
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 67
+
+particles1-17.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 68
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 69
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 70
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 71
+
+particles1-18.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 72
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 73
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 74
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 75
+
+particles1-19.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 76
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 77
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 78
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 79
+
+particles1-20.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 80
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 81
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 82
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 83
+
+particles1-21.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 84
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 85
+Comp 1
+  rotate: false
+  xy: 0, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 86
+Comp 1
+  rotate: false
+  xy: 1024, 1024
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 87
+
+particles1-22.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Comp 1
+  rotate: false
+  xy: 0, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 88
+Comp 1
+  rotate: false
+  xy: 1024, 0
+  size: 1024, 1024
+  orig: 1024, 1024
+  offset: 0, 0
+  index: 89
