@@ -66,7 +66,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 	private TextureAtlas textureAtlas;
 
 	private Animation<TextureRegion> animation;
-	private ArrayList<Animation<TextureRegion>> animations;
+	private ArrayList<Animation<TextureRegion>> animations = new ArrayList<>();
 	private boolean doRender = true;
 	private ArrayList<Particles> particlesList  = new ArrayList<>();
 	private ArrayList<NoteEvent> notesPlayed = new ArrayList<>();
@@ -107,6 +107,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		batch = new SpriteBatch();
 		batch.enableBlending();
+		batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ONE); // Additive Mode
 
 		Gdx.input.setInputProcessor(stage);
 		float ratio = (float)(Gdx.graphics.getWidth())/(float)(Gdx.graphics.getHeight());
@@ -119,12 +120,11 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 		new WindowsFrame(world, stage.getCamera().viewportWidth, stage.getCamera().viewportHeight);
 		Gdx.app.debug("WORLD STUFF", String.valueOf(Gdx.graphics.getWidth()));
 
-		rayHandler.setAmbientLight(0.1f,0.1f,0.1f, 1f);
 		rayHandler.setBlurNum(3);
 
 
 
-		rayHandler.setShadows(true);
+		rayHandler.setShadows(false);
 
 
 		notes = new ArrayList<>();
@@ -164,7 +164,9 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 			NoteEvent note = notesIterator.next();
 			float[] colorvals = notesColors.noteValueMap.get(note.getNoteName());
-			Particles particle = new Particles(0f,new Color(colorvals[0]/255f, colorvals[1]/255f, colorvals[2]/255f, 1f),
+			float alphavalue = (float) (Math.sqrt(note.getVelocity())/11.27);
+
+			Particles particle = new Particles(0f,new Color(colorvals[0]/255f, colorvals[1]/255f, colorvals[2]/255f, alphavalue),
 					(Gdx.graphics.getWidth()/88f)*note.noteValue-512, 0, noteCount);
 
 			particlesList.add(particle);
@@ -222,7 +224,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 		if(noteEvent.getNoteType().equals("NoteOn")) {
 
 			float alphavalue = (float) (Math.sqrt(noteEvent.getVelocity())/11.27);
-			float distanceval = 1 + (float)(Math.sqrt(noteEvent.getVelocity())/11.27)*3;
+			float distanceval =  (float)(Math.sqrt(noteEvent.getVelocity())/11.27)*2;
 			MyPointLight pl = myPointLightPool.obtain();
 			pl.setPosition((float)random.nextInt(10)-5,(float)random.nextInt(4)-2);
 			pl.setDistance(distanceval);
