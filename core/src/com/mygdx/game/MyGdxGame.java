@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -52,6 +53,8 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 	private Box2DDebugRenderer debugRenderer;
 	private RayHandler rayHandler;
 	private HashMap<String, MyPointLight> lightHashMap = new HashMap<String,MyPointLight>();
+	private HashMap<String, Particles> partHashMap = new HashMap<String,Particles>();
+
 	private ArrayList<MyPointLight> lightFadingList = new ArrayList<>();
 	private Random random = new Random();
 	private NotesColors notesColors = new NotesColors();
@@ -62,6 +65,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			return new MyPointLight(rayHandler, 64);
 		}
 	};
+
 	//Animation
 	private TextureAtlas textureAtlas;
 
@@ -69,8 +73,11 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 	private ArrayList<Animation<TextureRegion>> animations = new ArrayList<>();
 	private boolean doRender = true;
 	private ArrayList<Particles> particlesList  = new ArrayList<>();
+	private ArrayList<Particles> particlesFadeList  = new ArrayList<>();
+	private ArrayList<NoteEvent> notesWaiting = new ArrayList<>();
 	private ArrayList<NoteEvent> notesPlayed = new ArrayList<>();
 	private int noteCount;
+	private ArrayList<NoteEvent> noteOffList = new ArrayList<>();
 
 	public  MyGdxGame(){
 
@@ -100,15 +107,11 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		world = new World(new Vector2(0, 0), true);
-
-
-
 		rayHandler = new RayHandler(world);
 
 		batch = new SpriteBatch();
 		batch.enableBlending();
-		batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ONE); // Additive Mode
-
+		batch.setBlendFunction(GL20.GL_ONE, GL20.GL_FUNC_ADD);
 		Gdx.input.setInputProcessor(stage);
 		float ratio = (float)(Gdx.graphics.getWidth())/(float)(Gdx.graphics.getHeight());
 		stage = new Stage(new ScreenViewport());
@@ -122,7 +125,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		rayHandler.setBlurNum(3);
 
-
+		rayHandler.setAmbientLight(0.1f,0.1f,0.1f,1f);
 
 		rayHandler.setShadows(false);
 
@@ -138,6 +141,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 
 	@Override
+
 	public void render () {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -145,7 +149,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 		world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 		stage.draw();
 
-		rayHandler.setCombinedMatrix(stage.getCamera().combined,0,0,1,1);
+		rayHandler.setCombinedMatrix(stage.getCamera().combined, 0, 0, 1, 1);
 		try {
 			rayHandler.updateAndRender();
 		} catch (Exception e) {
@@ -154,49 +158,131 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		batch.begin();
 
-		for(Iterator<NoteEvent> notesIterator = notesPlayed.iterator(); notesIterator.hasNext();){
-			if(noteCount==4){
+		//ITERATE THROUGH NOTES ARRAY
+		notesPlayed.addAll(notesWaiting);
+		notesWaiting.clear();
+
+		for (Iterator<NoteEvent> notesIterator = notesPlayed.iterator(); notesIterator.hasNext(); ) {
+			//GO THROUGH 5 ANIMATION CHOICES
+			if (noteCount == 4) {
 				noteCount = 0;
+			} else {
+				noteCount += 1;
 			}
-			else{
-				noteCount +=1;
-			}
+
 
 			NoteEvent note = notesIterator.next();
-			float[] colorvals = notesColors.noteValueMap.get(note.getNoteName());
-			float alphavalue = (float) (Math.sqrt(note.getVelocity())/11.27);
+			if (note.getNoteType().equals("NoteOn")) {
 
-			Particles particle = new Particles(0f,new Color(colorvals[0]/255f, colorvals[1]/255f, colorvals[2]/255f, alphavalue),
-					(Gdx.graphics.getWidth()/88f)*note.noteValue-512, 0, noteCount);
+				float[] colorvals = notesColors.noteValueMap.get(note.getNoteName());
+				float alphavalue = (float) (Math.sqrt(note.getVelocity()) / 11.27);
+				//---------------------------Particle class creation for graphics use-----------------------------------
+				Particles particle = new Particles(0f, new Color(colorvals[0] / 255f, colorvals[1] / 255f, colorvals[2] / 255f, 1),
+						(Gdx.graphics.getWidth() / 88f) * note.noteValue - 512, 0, noteCount);
+				particle.r = colorvals[0] / 255f;
+				particle.g = colorvals[1] / 255f;
+				particle.b = colorvals[2] / 255f;
 
-			particlesList.add(particle);
-			notesIterator.remove();
+				particle.noteID = note.getNoteName().concat(String.valueOf(note.getOctave()));
+				partHashMap.put(note.getNoteName().concat(String.valueOf(note.getOctave())), particle);
+//				particlesList.add(particle);
+
+				//--------------------------------------------------------------------------------------------------------
+
+				//DRAW A POINT LIGHT AND ADD IT TO LIST
+				float distanceval = (float) (Math.sqrt(note.getVelocity()) / 11.27) * 2;
+				MyPointLight pl = myPointLightPool.obtain();
+				pl.setPosition((float) random.nextInt(10) - 5, (float) random.nextInt(4) - 2);
+				pl.setDistance(distanceval);
+				float[] rgbvals = notesColors.noteValueMap.get(note.getNoteName());
+				pl.setColor(new Color(rgbvals[0] / 255f, rgbvals[1] / 255f, rgbvals[2] / 255f, alphavalue));
+				lightHashMap.put(note.getNoteName().concat(String.valueOf(note.getOctave())), pl);
+				notesIterator.remove();
+
+			} else if (note.getNoteType().equals("NoteOff")) {
+				MyPointLight matchingLight = lightHashMap.get(note.getNoteName().concat(String.valueOf(note.getOctave())));
+				Particles matchingParticles = partHashMap.get(note.getNoteName().concat(String.valueOf(note.getOctave())));
+				matchingParticles.enabled = false;
+				if (sustainIsHeld) {
+					lightFadingList.add(matchingLight);
+					particlesList.add(matchingParticles);
+
+				} else {
+					particlesFadeList.add(matchingParticles);
+
+					matchingLight.setDistance(0);
+					myPointLightPool.free(matchingLight);
+				}
+				notesIterator.remove();
+
+			} else if (note.getNoteType().equals("Control")) {
+				sustainIsHeld = true;
+				notesIterator.remove();
+
+			} else {
+				sustainIsHeld = false;
+				for (Iterator<MyPointLight> lightIterator = lightFadingList.iterator(); lightIterator.hasNext(); ) {
+					MyPointLight fadingLight = lightIterator.next();
+					fadingLight.setDistance(0);
+					myPointLightPool.free(fadingLight);
+					lightIterator.remove();
+				}
+				notesIterator.remove();
+				particlesFadeList.addAll(particlesList);
+				particlesList.clear();
+			}
 
 		}
-		for(Iterator<Particles> timeit = particlesList.iterator(); timeit.hasNext();){
-			Particles curParticles = timeit.next();
-			TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
-			batch.setColor(curParticles.color);
-			batch.draw(frame,curParticles.x,0);
-			curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
-			Gdx.app.debug("PARTICLESVALUES", String.valueOf(curParticles.x) + "ElapsedTime: " + curParticles.elapsedTime);
-			if(curParticles.elapsedTime>2.7){
+		for (Iterator timeit = partHashMap.entrySet().iterator(); timeit.hasNext(); ) {
+			Map.Entry curEntry = (Map.Entry) timeit.next();
+			Particles curParticles = (Particles) curEntry.getValue();
+			if (curParticles.enabled) {
+				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
+
+				batch.setColor(curParticles.color);
+				batch.draw(frame, curParticles.x, 0);
+				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+
+			} else {
 				timeit.remove();
 			}
 		}
 
+		for (Iterator<Particles> susIt = particlesList.iterator(); susIt.hasNext(); ) {
+			Particles curParticles = susIt.next();
+			TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
+
+			batch.setColor(curParticles.color);
+			batch.draw(frame, curParticles.x, 0);
+			curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+			if (curParticles.elapsedTime > 2.7) {
+				susIt.remove();
+			}
+		}
+		for (Iterator<Particles> susIt = particlesFadeList.iterator(); susIt.hasNext(); ) {
+			Particles curParticles = susIt.next();
+			TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
+			curParticles.a-=2*Gdx.graphics.getDeltaTime();
+			batch.setColor(new Color(curParticles.r, curParticles.g, curParticles.b, curParticles.a));
+			batch.draw(frame, curParticles.x, 0);
+			curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+			if (curParticles.elapsedTime > 2.7 || curParticles.a<= 0) {
+				susIt.remove();
+			}
+		}
 
 
 
 		for(Iterator<MyPointLight> lightIterator = lightFadingList.iterator(); lightIterator.hasNext();){
 				MyPointLight fadingLight = lightIterator.next();
 
-				fadingLight.setDistance(fadingLight.getDistance() - 8 * Gdx.graphics.getDeltaTime());
+				fadingLight.setDistance(fadingLight.getDistance() - 4 * Gdx.graphics.getDeltaTime());
 				if (fadingLight.getDistance() <= 0) {
 					fadingLight.setDistance(0);
 					myPointLightPool.free(fadingLight);
 					lightIterator.remove();
 				}
+
 
 
 		};
@@ -220,46 +306,13 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 	public void onNoteReceived(String midiMsg) {
 		this.MidiMsg = midiMsg;
 		NoteEvent noteEvent = new NoteEvent(midiMsg);
-		Gdx.app.debug("MIDINOTE", noteEvent.getNoteType() + ", " + noteEvent.getNoteName());
-		if(noteEvent.getNoteType().equals("NoteOn")) {
 
-			float alphavalue = (float) (Math.sqrt(noteEvent.getVelocity())/11.27);
-			float distanceval =  (float)(Math.sqrt(noteEvent.getVelocity())/11.27)*2;
-			MyPointLight pl = myPointLightPool.obtain();
-			pl.setPosition((float)random.nextInt(10)-5,(float)random.nextInt(4)-2);
-			pl.setDistance(distanceval);
-			float[] rgbvals = notesColors.noteValueMap.get(noteEvent.getNoteName());
-			notesPlayed.add(noteEvent);
-			pl.setColor(new Color(rgbvals[0]/255f, rgbvals[1]/255f, rgbvals[2]/255f, alphavalue));
-			lightHashMap.put(noteEvent.getNoteName().concat(String.valueOf(noteEvent.getOctave())), pl);
-
-		}
-		else if(noteEvent.getNoteType().equals("NoteOff")){
-			MyPointLight matchingLight = lightHashMap.get(noteEvent.getNoteName().concat(String.valueOf(noteEvent.getOctave())));
-			if(sustainIsHeld){
-				lightFadingList.add(matchingLight);
-
-			}
-			else{
-				matchingLight.setDistance(0);
-				myPointLightPool.free(matchingLight);
-			}
+			notesWaiting.add(noteEvent);
 
 
 
-		}
-		else if(noteEvent.getNoteType().equals("Control")){
-			sustainIsHeld = true;
-		}
-		else{
-			sustainIsHeld = false;
-//			for(Iterator<MyPointLight> lightIterator = lightFadingList.iterator(); lightIterator.hasNext();){
-//				MyPointLight fadingLight = lightIterator.next();
-//				fadingLight.setDistance(0);
-//				myPointLightPool.free(fadingLight);
-//				lightIterator.remove();
-//			};
-		}
+
+
 
 	}
 
