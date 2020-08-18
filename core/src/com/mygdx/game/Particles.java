@@ -10,6 +10,7 @@ public class Particles  {
     public float y;
     public int count;
     public String noteID;
+    public int animType = 0;
     public Boolean enabled = true;
     public float r;
     public float g;

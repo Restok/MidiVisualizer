@@ -49,7 +49,7 @@ public class AndroidMidiReceiver implements MidiProcess{
         finalReceiver = new FinalReceiver(this);
         midiFramer = new MidiFramer(finalReceiver);
         MidiDeviceInfo[] infos = m.getDevices();
-        info = infos[1];
+        info = infos[0];
         Bundle properties = info.getProperties();
         manufacturer = properties.getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
 

@@ -15,8 +15,6 @@ public class MyPointLight extends PointLight implements Pool.Poolable {
     public MyPointLight(RayHandler rayHandler, int rays, Color color, float distance, float x, float y) {
         super(rayHandler, rays, color, distance, x, y);
     }
-    public void init(){
-    }
     @Override
     public void reset() {
 
