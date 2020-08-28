@@ -129,9 +129,11 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		batch = new SpriteBatch();
 		batch.enableBlending();
-		batch.setBlendFunction(GL20.GL_ONE, GL20.GL_FUNC_ADD);
+		batch.setBlendFunction(GL20.GL_SRC_COLOR, GL20.GL_FUNC_ADD);
+		batch.setBlendFunction(GL20.GL_SRC_COLOR, GL20.GL_FUNC_ADD);
 		Gdx.input.setInputProcessor(stage);
 		float ratio = (float)(Gdx.graphics.getWidth())/(float)(Gdx.graphics.getHeight());
+
 		stage = new Stage(new ScreenViewport());
 		stage.getCamera().position.set(0,0,10);
 		stage.getCamera().lookAt(0,0,0);
@@ -154,7 +156,6 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 		stage.act();
 		world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 		stage.draw();
-
 		rayHandler.setCombinedMatrix(stage.getCamera().combined, 0, 0, 1, 1);
 		try {
 			rayHandler.updateAndRender();
@@ -162,7 +163,6 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			e.printStackTrace();
 		}
 
-		batch.begin();
 
 		//ITERATE THROUGH NOTES ARRAY
 		notesPlayed.addAll(notesWaiting);
@@ -234,7 +234,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 			} else if (note.getNoteType().equals("Control")) {
 				sustainIsHeld = true;
-				Particles clefLight = new Particles(0f, sustainColor, Gdx.graphics.getWidth()/2f - 256, Gdx.graphics.getHeight()/2f, 5);
+				Particles clefLight = new Particles(0f, sustainColor, Gdx.graphics.getWidth()/2f - 256, Gdx.graphics.getHeight()/2f-256, 5);
 				clefLight.animType = 1;
 				particlesList.add(clefLight);
 				notesIterator.remove();
@@ -255,29 +255,40 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		}
 
-		for (Iterator<Particles> susIt = clefLits.iterator(); susIt.hasNext(); ) {
-			Particles curParticles = susIt.next();
-			try {
-				TextureRegion frame = pedalHeldAnimation.getKeyFrame(curParticles.elapsedTime, true);
-				batch.setColor(curParticles.color);
-				batch.draw(frame, curParticles.x, curParticles.y);
-				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+		for(Iterator<MyPointLight> lightIterator = lightFadingList.iterator(); lightIterator.hasNext();){
+			MyPointLight fadingLight = lightIterator.next();
 
+			fadingLight.setDistance(fadingLight.getDistance() - 4 * Gdx.graphics.getDeltaTime());
+			if (fadingLight.getDistance() <= 0) {
+				fadingLight.setDistance(0);
+				myPointLightPool.free(fadingLight);
+				lightIterator.remove();
 			}
-			catch (Exception e){
-				continue;
-			}
+		};
+		for(Iterator<MyConeLight> lightIterator = coneFadingList.iterator(); lightIterator.hasNext();){
+			MyConeLight fadingLight = lightIterator.next();
 
-		}
+			fadingLight.setDistance(fadingLight.getDistance() - 12 * Gdx.graphics.getDeltaTime());
+			if (fadingLight.getDistance() <= 0) {
+				fadingLight.setDistance(0);
+				myConeLightPool.free(fadingLight);
+				lightIterator.remove();
+			}
+		};
+
+		batch.begin();
+		batch.setColor(Color.WHITE);
+		batch.draw(noteTexture, Gdx.graphics.getWidth()/2f-256, Gdx.graphics.getHeight()/2f-256);
+
+
 		for (Iterator timeit = partHashMap.entrySet().iterator(); timeit.hasNext(); ) {
 			Map.Entry curEntry = (Map.Entry) timeit.next();
 			Particles curParticles = (Particles) curEntry.getValue();
-				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
+			TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
 
-				batch.setColor(curParticles.color);
-				batch.draw(frame, curParticles.x, 0);
-				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
-
+			batch.setColor(curParticles.color);
+			batch.draw(frame, curParticles.x, 0);
+			curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
 		}
 
 		for (Iterator<Particles> susIt = particlesList.iterator(); susIt.hasNext(); ) {
@@ -286,7 +297,7 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			try {
 				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
 				batch.setColor(curParticles.color);
-				batch.draw(frame, curParticles.x, 0);
+				batch.draw(frame, curParticles.x, curParticles.y);
 				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
 				if (animations.get(curParticles.count).isAnimationFinished(curParticles.elapsedTime)&& !loop)  {
 					if(curParticles.animType == 1){
@@ -306,9 +317,14 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 		particlesList.addAll(clefLits);
 		clefLits.clear();
 		for (Iterator<Particles> susIt = particlesFadeList.iterator(); susIt.hasNext(); ) {
+
 			try {
 				Particles curParticles = susIt.next();
-				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, false);
+				boolean loop = curParticles.animType == 2;
+				if(curParticles.animType == 2){
+					Gdx.app.debug("ISTHISWORKING", String.valueOf(curParticles.a));
+				}
+				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
 				curParticles.a -= 2 * Gdx.graphics.getDeltaTime();
 				batch.setColor(new Color(curParticles.r, curParticles.g, curParticles.b, curParticles.a));
 				batch.draw(frame, curParticles.x, curParticles.y);
@@ -323,30 +339,8 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			}
 		}
 
-
-
-		for(Iterator<MyPointLight> lightIterator = lightFadingList.iterator(); lightIterator.hasNext();){
-				MyPointLight fadingLight = lightIterator.next();
-
-				fadingLight.setDistance(fadingLight.getDistance() - 4 * Gdx.graphics.getDeltaTime());
-				if (fadingLight.getDistance() <= 0) {
-					fadingLight.setDistance(0);
-					myPointLightPool.free(fadingLight);
-					lightIterator.remove();
-				}
-		};
-		for(Iterator<MyConeLight> lightIterator = coneFadingList.iterator(); lightIterator.hasNext();){
-			MyConeLight fadingLight = lightIterator.next();
-
-			fadingLight.setDistance(fadingLight.getDistance() - 12 * Gdx.graphics.getDeltaTime());
-			if (fadingLight.getDistance() <= 0) {
-				fadingLight.setDistance(0);
-				myConeLightPool.free(fadingLight);
-				lightIterator.remove();
-			}
-		};
-
 		batch.end();
+
 
 
 	}
