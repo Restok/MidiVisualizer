@@ -235,6 +235,9 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			} else if (note.getNoteType().equals("Control")) {
 				sustainIsHeld = true;
 				Particles clefLight = new Particles(0f, sustainColor, Gdx.graphics.getWidth()/2f - 256, Gdx.graphics.getHeight()/2f-256, 5);
+				clefLight.r = clefLight.color.r;
+				clefLight.g = clefLight.color.g;
+				clefLight.b = clefLight.color.b;
 				clefLight.animType = 1;
 				particlesList.add(clefLight);
 				notesIterator.remove();
@@ -277,8 +280,11 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 		};
 
 		batch.begin();
+
 		batch.setColor(Color.WHITE);
+		batch.draw(bgTexture, 0, 0);
 		batch.draw(noteTexture, Gdx.graphics.getWidth()/2f-256, Gdx.graphics.getHeight()/2f-256);
+
 
 
 		for (Iterator timeit = partHashMap.entrySet().iterator(); timeit.hasNext(); ) {
@@ -290,40 +296,12 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			batch.draw(frame, curParticles.x, 0);
 			curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
 		}
-
-		for (Iterator<Particles> susIt = particlesList.iterator(); susIt.hasNext(); ) {
-			Particles curParticles = susIt.next();
-			boolean loop = curParticles.animType == 2;
-			try {
-				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
-				batch.setColor(curParticles.color);
-				batch.draw(frame, curParticles.x, curParticles.y);
-				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
-				if (animations.get(curParticles.count).isAnimationFinished(curParticles.elapsedTime)&& !loop)  {
-					if(curParticles.animType == 1){
-						Particles heldParticles = new Particles(0f, curParticles.color, curParticles.x, curParticles.y, 6);
-						heldParticles.animType = 2;
-						clefLits.add(heldParticles);
-					}
-					susIt.remove();
-				}
-			}
-
-			catch (Exception e){
-				continue;
-			}
-
-		}
-		particlesList.addAll(clefLits);
-		clefLits.clear();
 		for (Iterator<Particles> susIt = particlesFadeList.iterator(); susIt.hasNext(); ) {
 
 			try {
 				Particles curParticles = susIt.next();
-				boolean loop = curParticles.animType == 2;
-				if(curParticles.animType == 2){
-					Gdx.app.debug("ISTHISWORKING", String.valueOf(curParticles.a));
-				}
+				boolean loop = curParticles.animType ==2;
+
 				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
 				curParticles.a -= 2 * Gdx.graphics.getDeltaTime();
 				batch.setColor(new Color(curParticles.r, curParticles.g, curParticles.b, curParticles.a));
@@ -338,6 +316,49 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 				continue;
 			}
 		}
+		for (Iterator<Particles> susIt = particlesList.iterator(); susIt.hasNext(); ) {
+			Particles curParticles = susIt.next();
+			try {
+				boolean loop = curParticles.animType == 2;
+
+				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
+				batch.setColor(curParticles.color);
+				if(curParticles.animType > 0){
+					if (!curParticles.color.equals(sustainColor)){
+						particlesFadeList.add(curParticles);
+						Particles heldParticles = new Particles(0f, sustainColor, curParticles.x, curParticles.y, curParticles.count);
+						heldParticles.r = sustainColor.r;
+						heldParticles.g = sustainColor.g;
+						heldParticles.b = sustainColor.b;
+						heldParticles.animType = curParticles.animType;
+						clefLits.add(heldParticles);
+						susIt.remove();
+
+					}
+				}
+				batch.draw(frame, curParticles.x, curParticles.y);
+				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+				if (animations.get(curParticles.count).isAnimationFinished(curParticles.elapsedTime)&& !loop)  {
+					if(curParticles.animType == 1){
+						Particles heldParticles = new Particles(0f, curParticles.color, curParticles.x, curParticles.y, 6);
+						heldParticles.r = curParticles.color.r;
+						heldParticles.g = curParticles.color.g;
+						heldParticles.b = curParticles.color.b;
+						heldParticles.animType = 2;
+						clefLits.add(heldParticles);
+					}
+					susIt.remove();
+				}
+			}
+
+			catch (Exception e){
+				continue;
+			}
+
+		}
+		particlesList.addAll(clefLits);
+		clefLits.clear();
+
 
 		batch.end();
 
