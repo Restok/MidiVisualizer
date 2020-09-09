@@ -281,9 +281,9 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 
 		batch.begin();
 
-		batch.setColor(Color.WHITE);
-		batch.draw(bgTexture, 0, 0);
-		batch.draw(noteTexture, Gdx.graphics.getWidth()/2f-256, Gdx.graphics.getHeight()/2f-256);
+//		batch.setColor(Color.WHITE);
+//		batch.draw(bgTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		batch.draw(noteTexture, Gdx.graphics.getWidth()/2f-256, Gdx.graphics.getHeight()/2f-256);
 
 
 
@@ -296,66 +296,78 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 			batch.draw(frame, curParticles.x, 0);
 			curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
 		}
+
 		for (Iterator<Particles> susIt = particlesFadeList.iterator(); susIt.hasNext(); ) {
+			Particles curParticles = susIt.next();
+			if (curParticles != null) {
+				try {
+					boolean loop = curParticles.animType == 2;
 
-			try {
-				Particles curParticles = susIt.next();
-				boolean loop = curParticles.animType ==2;
+					TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
+					curParticles.a -= 2 * Gdx.graphics.getDeltaTime();
+					batch.setColor(new Color(curParticles.r, curParticles.g, curParticles.b, curParticles.a));
+					batch.draw(frame, curParticles.x, curParticles.y);
 
-				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
-				curParticles.a -= 2 * Gdx.graphics.getDeltaTime();
-				batch.setColor(new Color(curParticles.r, curParticles.g, curParticles.b, curParticles.a));
-				batch.draw(frame, curParticles.x, curParticles.y);
-
-				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
-				if (curParticles.a <= 0) {
-					susIt.remove();
+					curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+					if (curParticles.a <= 0) {
+						susIt.remove();
+					}
+				} catch (Exception e) {
+					continue;
 				}
 			}
-			catch (Exception e){
-				continue;
+			else{
+				susIt.remove();
 			}
 		}
 		for (Iterator<Particles> susIt = particlesList.iterator(); susIt.hasNext(); ) {
 			Particles curParticles = susIt.next();
-			try {
-				boolean loop = curParticles.animType == 2;
+			if (curParticles != null) {
+				try {
+					boolean loop = curParticles.animType == 2;
 
-				TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
-				batch.setColor(curParticles.color);
-				if(curParticles.animType > 0){
-					if (!curParticles.color.equals(sustainColor)){
-						particlesFadeList.add(curParticles);
-						Particles heldParticles = new Particles(0f, sustainColor, curParticles.x, curParticles.y, curParticles.count);
-						heldParticles.r = sustainColor.r;
-						heldParticles.g = sustainColor.g;
-						heldParticles.b = sustainColor.b;
-						heldParticles.animType = curParticles.animType;
-						clefLits.add(heldParticles);
+					TextureRegion frame = animations.get(curParticles.count).getKeyFrame(curParticles.elapsedTime, loop);
+					batch.setColor(curParticles.color);
+					if (curParticles.animType > 0) {
+						if (!curParticles.color.equals(sustainColor)) {
+							particlesFadeList.add(curParticles);
+							Particles heldParticles = new Particles(0f, sustainColor, curParticles.x, curParticles.y, curParticles.count);
+							heldParticles.r = sustainColor.r;
+							heldParticles.g = sustainColor.g;
+							heldParticles.b = sustainColor.b;
+							heldParticles.animType = curParticles.animType;
+							clefLits.add(heldParticles);
+							susIt.remove();
+
+						}
+					}
+					batch.draw(frame, curParticles.x, curParticles.y);
+					curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
+					if (animations.get(curParticles.count).isAnimationFinished(curParticles.elapsedTime) && !loop || (curParticles.elapsedTime > 2.7 && !loop)) {
+						if (curParticles.animType == 1) {
+							Particles heldParticles = new Particles(0f, curParticles.color, curParticles.x, curParticles.y, 6);
+							heldParticles.r = curParticles.color.r;
+							heldParticles.g = curParticles.color.g;
+							heldParticles.b = curParticles.color.b;
+							heldParticles.animType = 2;
+							clefLits.add(heldParticles);
+						}
+
 						susIt.remove();
-
 					}
+				} catch (Exception e) {
+					Gdx.app.debug("ERRORRENDER", String.valueOf(e.getMessage()));
+					Gdx.app.debug("ERRORRENDER", String.valueOf(particlesList.size()));
+					Gdx.app.debug("ERRORRENDER", String.valueOf(particlesList.size()));
+					continue;
 				}
-				batch.draw(frame, curParticles.x, curParticles.y);
-				curParticles.elapsedTime += Gdx.graphics.getDeltaTime();
-				if (animations.get(curParticles.count).isAnimationFinished(curParticles.elapsedTime)&& !loop)  {
-					if(curParticles.animType == 1){
-						Particles heldParticles = new Particles(0f, curParticles.color, curParticles.x, curParticles.y, 6);
-						heldParticles.r = curParticles.color.r;
-						heldParticles.g = curParticles.color.g;
-						heldParticles.b = curParticles.color.b;
-						heldParticles.animType = 2;
-						clefLits.add(heldParticles);
-					}
-					susIt.remove();
-				}
-			}
 
-			catch (Exception e){
-				continue;
 			}
-
+			else{
+				susIt.remove();
+			}
 		}
+
 		particlesList.addAll(clefLits);
 		clefLits.clear();
 
@@ -370,6 +382,8 @@ public class MyGdxGame extends ApplicationAdapter implements MidiProcess  {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
+		bgTexture.dispose();
+
 		noteTexture.dispose();
 		rayHandler.dispose();
 		textureAtlas.dispose();
