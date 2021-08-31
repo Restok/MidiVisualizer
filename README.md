@@ -1,2 +1,2 @@
 # PianoMidiVisualizer
- no idea where this is going
+Android midi app that can connect to a 88-key midi keyboard and displays visual effects
